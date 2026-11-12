@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnlineFoodShop – Delicious Food Delivered</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── HEADER / NAV ── -->
+  <header>
+    <a class="logo" href="#">
+      <div class="logo-icon">🍽️</div>
+      <div class="logo-text">
+        <span>OnlineFoodShop</span>
+        <span>Fresh &amp; Fast Delivery</span>
+      </div>
+    </a>
+    <nav>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+        <span class="toggle-icon">☰</span>
+      </button>
+      <ul id="nav-menu">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#recommender">Recommender</a></li>
+        <li><a href="#products">Menu</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-tag">🚀 Fast Delivery – 30 mins or less</span>
+      <h1>Welcome to <em>Online</em><br>FoodShop</h1>
+      <p>Discover restaurant-quality meals delivered straight to your door. Fresh ingredients, bold flavors, zero compromise.</p>
+      <div class="hero-btns">
+        <a href="#products" class="btn-primary">Order Now</a>
+        <a href="#recommender" class="btn-outline">🤖 AI Recommend</a>
+        <a href="#reviews" class="btn-outline">⭐ Reviews</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUICK LINKS ── -->
+  <div class="quick-links">
+    <div class="quick-card">
+      <img src="ourprice.jfif" alt="Our Prices">
+      <div class="quick-card-overlay">
+        <div>
+          <div class="quick-card-label">Our Prices</div>
+          <button class="quick-card-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View Menu</button>
+        </div>
+      </div>
+    </div>
+    <div class="quick-card">
+      <img src="todaysspeacial.jfif" alt="Today's Specials">
+      <div class="quick-card-overlay">
+        <div>
+          <div class="quick-card-label">Today's Specials</div>
+          <button class="quick-card-btn" onclick="showDeals()">See Deals</button>
+        </div>
+      </div>
+    </div>
+    <div class="quick-card">
+      <img src="burger.jpeg" alt="Western Platter">
+      <div class="quick-card-overlay">
+        <div>
+          <div class="quick-card-label">Western Platter</div>
+          <button class="quick-card-btn" onclick="openOrder('Western Platter Combo', '₹499')">Order Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="quick-card">
+      <img src="chefchoice.jfif" alt="Chef's Choice">
+      <div class="quick-card-overlay">
+        <div>
+          <div class="quick-card-label">Chef's Choice</div>
+          <button class="quick-card-btn" onclick="openOrder(&quot;Chef's Special Bowl&quot;, '₹299')">Order Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       AI FOOD RECOMMENDER SECTION
+  ══════════════════════════════════════ -->
+  <section class="section ai-section" id="recommender">
+    <div class="section-header">
+      <h2 class="section-title">🤖 AI Food <span>Recommender</span></h2>
+    </div>
+    <div class="recommender-card">
+      <p class="recommender-desc">Tell us your mood, craving, or budget — our AI will pick the perfect dish for you!</p>
+      <div class="recommender-tags">
+        <button class="mood-tag" onclick="setMood('I am very hungry and want something filling')">😋 Very Hungry</button>
+        <button class="mood-tag" onclick="setMood('I want something light and healthy')">🥗 Light & Healthy</button>
+        <button class="mood-tag" onclick="setMood('I have a budget of ₹300')">💰 Budget ₹300</button>
+        <button class="mood-tag" onclick="setMood('I want the most popular dish')">🔥 Most Popular</button>
+        <button class="mood-tag" onclick="setMood('Surprise me with something special')">🎲 Surprise Me</button>
+      </div>
+      <div class="recommender-input-row">
+        <input type="text" id="recommender-input" placeholder="e.g. I want something spicy and affordable…" autocomplete="off">
+        <button class="btn-primary" id="recommender-btn" onclick="getRecommendation()">Get Recommendation</button>
+      </div>
+      <div class="recommender-result" id="recommender-result" style="display:none;">
+        <div class="recommender-result-inner" id="recommender-result-text"></div>
+      </div>
+      <div class="ai-loading" id="recommender-loading" style="display:none;">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span style="margin-left:8px;color:var(--gray);font-size:13px;">AI is thinking…</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FEATURED PRODUCTS + SMART SEARCH
+  ══════════════════════════════════════ -->
+  <section class="section" id="products">
+    <div class="section-header">
+      <h2 class="section-title">Featured <span>Products</span></h2>
+      <a href="#" class="section-link">View All →</a>
+    </div>
+
+    <!-- AI SMART SEARCH -->
+    <div class="smart-search-wrapper">
+      <div class="smart-search-bar">
+        <span class="search-ai-badge">🤖 AI</span>
+        <input type="text" id="search-input" placeholder="Try: 'something cheap', 'chef recommended', 'filling meal'…" autocomplete="off">
+        <button class="search-clear" id="search-clear" aria-label="Clear">✕</button>
+        <button class="smart-search-btn" id="smart-search-btn" onclick="aiSearch()">Search</button>
+      </div>
+      <div class="search-mode-toggle">
+        <button class="mode-btn active" id="mode-normal" onclick="setSearchMode('normal')">🔤 Normal Search</button>
+        <button class="mode-btn" id="mode-ai" onclick="setSearchMode('ai')">🤖 AI Smart Search</button>
+      </div>
+      <div class="ai-search-result" id="ai-search-result" style="display:none;"></div>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="product-grid" id="product-grid">
+
+      <div class="product-card" data-name="western platter combo" data-desc="grilled meats fries sauces bestseller" data-price="499">
+        <img class="product-img" src="burger.jpeg" alt="Western Food Platter">
+        <div class="product-info">
+          <span class="product-badge">🔥 Bestseller</span>
+          <div class="product-name">Western Platter Combo</div>
+          <p class="product-desc">A hearty selection of grilled meats, fries, and sauces — the ultimate crowd pleaser.</p>
+          <div class="product-footer">
+            <div class="product-price">₹499 <sub>/ serving</sub></div>
+            <button class="order-btn" onclick="openOrder('Western Platter Combo', '₹499')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-name="gourmet meal delight" data-desc="premium ingredients chef seasoning top rated" data-price="349">
+        <img class="product-img" src="food1.jpeg" alt="Gourmet Meal Delight">
+        <div class="product-info">
+          <span class="product-badge">⭐ Top Rated</span>
+          <div class="product-name">Gourmet Meal Delight</div>
+          <p class="product-desc">Freshly prepared gourmet meals with premium ingredients and chef's special seasoning.</p>
+          <div class="product-footer">
+            <div class="product-price">₹349 <sub>/ serving</sub></div>
+            <button class="order-btn" onclick="openOrder('Gourmet Meal Delight', '₹349')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-name="chef's special bowl" data-desc="handcrafted special chef pick unique" data-price="299">
+        <img class="product-img" src="food3.jfif" alt="Chef's Special Bowl">
+        <div class="product-info">
+          <span class="product-badge">👨‍🍳 Chef's Pick</span>
+          <div class="product-name">Chef's Special Bowl</div>
+          <p class="product-desc">Today's handcrafted special — a unique combination selected fresh by our head chef.</p>
+          <div class="product-footer">
+            <div class="product-price">₹299 <sub>/ serving</sub></div>
+            <button class="order-btn" onclick="openOrder('Chef\'s Special Bowl', '₹299')">Order Now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="no-results" id="no-results">
+      <span>🍽️</span>
+      No dishes found. Try a different search!
+    </div>
+
+  </section>
+
+  <!-- ── PROMO BANNER ── -->
+  <div class="promo-banner">
+    <div class="promo-text">
+      <h2>Get <em>20% Off</em> Your First Order!</h2>
+      <p>Use code <strong style="color:var(--gold)">FOODSHOP20</strong> at checkout. Valid on all items today only.</p>
+    </div>
+    <button class="btn-primary" style="white-space:nowrap">Claim Offer →</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       REVIEWS SECTION WITH AI SUMMARY
+  ══════════════════════════════════════ -->
+  <section class="section" id="reviews">
+    <div class="section-header">
+      <h2 class="section-title">Customer <span>Reviews</span></h2>
+    </div>
+
+    <!-- Write a review -->
+    <div class="review-form-card">
+      <h3 class="review-form-title">✍️ Write a Review</h3>
+      <div class="review-form-row">
+        <input type="text" id="review-name" placeholder="Your name" autocomplete="off">
+        <select id="review-dish">
+          <option value="">Select dish…</option>
+          <option>Western Platter Combo</option>
+          <option>Gourmet Meal Delight</option>
+          <option>Chef's Special Bowl</option>
+        </select>
+      </div>
+      <div class="star-rating" id="star-rating">
+        <span class="star" data-val="1">★</span>
+        <span class="star" data-val="2">★</span>
+        <span class="star" data-val="3">★</span>
+        <span class="star" data-val="4">★</span>
+        <span class="star" data-val="5">★</span>
+      </div>
+      <textarea id="review-text" placeholder="Share your experience…" rows="3"></textarea>
+      <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+    </div>
+
+    <!-- Reviews list -->
+    <div class="reviews-grid" id="reviews-grid">
+      <!-- Sample reviews pre-loaded -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">R</div>
+          <div>
+            <div class="review-name">Rahul S.</div>
+            <div class="review-dish">Western Platter Combo</div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <p class="review-text">Absolutely delicious! The grilled meats were perfectly cooked and the fries were crispy. Will definitely order again!</p>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">P</div>
+          <div>
+            <div class="review-name">Priya M.</div>
+            <div class="review-dish">Gourmet Meal Delight</div>
+          </div>
+          <div class="review-stars">★★★★☆</div>
+        </div>
+        <p class="review-text">Great quality ingredients and amazing flavors. Delivery was on time too. The seasoning was spot on!</p>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">A</div>
+          <div>
+            <div class="review-name">Amit K.</div>
+            <div class="review-dish">Chef's Special Bowl</div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <p class="review-text">The chef's special never disappoints. Unique combination every time and always fresh. Best value for money!</p>
+      </div>
+    </div>
+
+    <!-- AI Review Summary -->
+    <div class="ai-summary-card">
+      <div class="ai-summary-header">
+        <span>🤖</span>
+        <div>
+          <div class="ai-summary-title">AI Review Summary</div>
+          <div class="ai-summary-sub">Powered by Claude AI</div>
+        </div>
+        <button class="btn-primary" id="summarize-btn" onclick="summarizeReviews()" style="margin-left:auto;padding:10px 20px;font-size:13px;">
+          Summarize Reviews
+        </button>
+      </div>
+      <div class="ai-summary-result" id="ai-summary-result" style="display:none;"></div>
+      <div class="ai-loading" id="summary-loading" style="display:none;">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span style="margin-left:8px;color:var(--gray);font-size:13px;">AI is analyzing reviews…</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>Copyright &copy; 2020–2024 <strong>OnlineFoodShop</strong>. All Rights Reserved.</p>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       AI CHATBOT WIDGET
+  ══════════════════════════════════════ -->
+  <div class="chat-widget" id="chat-widget">
+    <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+      <span class="chat-toggle-icon" id="chat-toggle-icon">🤖</span>
+    </button>
+    <div class="chat-window" id="chat-window">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-avatar">🤖</div>
+          <div>
+            <div class="chat-name">FoodBot AI</div>
+            <div class="chat-status">● Online</div>
+          </div>
+        </div>
+        <button class="chat-close" id="chat-close">✕</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg bot">
+          <div class="chat-bubble">
+            👋 Hi! I'm <strong>FoodBot</strong>!<br><br>
+            Ask me about menu, prices, delivery or offers 🍽️
+          </div>
+        </div>
+        <div class="chat-suggestions" id="chat-suggestions">
+          <button class="suggestion-btn" onclick="sendSuggestion('What dishes do you have?')">🍽️ Menu</button>
+          <button class="suggestion-btn" onclick="sendSuggestion('What are your prices?')">💰 Prices</button>
+          <button class="suggestion-btn" onclick="sendSuggestion('How fast is delivery?')">🚚 Delivery</button>
+          <button class="suggestion-btn" onclick="sendSuggestion('Any offers today?')">🎉 Offers</button>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask me anything…" autocomplete="off">
+        <button class="chat-send" id="chat-send">➤</button>
+      </div>
+      <div class="chat-api-notice" id="chat-api-notice">
+        ⚠️ Add your Claude API key in <code>script.js</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       ORDER FORM POPUP
+  ══════════════════════════════════════ -->
+  <div class="order-overlay" id="order-overlay" onclick="closeOrder()"></div>
+
+  <div class="order-popup" id="order-popup">
+
+    <!-- Header -->
+    <div class="order-popup-header">
+      <div class="order-popup-title">
+        <span>🛒</span>
+        <div>
+          <div class="order-popup-name">Place Your Order</div>
+          <div class="order-popup-sub" id="order-dish-label">Western Platter Combo</div>
+        </div>
+      </div>
+      <button class="order-popup-close" onclick="closeOrder()">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="order-popup-body">
+
+      <!-- Dish summary -->
+      <div class="order-dish-summary" id="order-dish-summary">
+        <div class="order-dish-info">
+          <span class="order-dish-name" id="order-dish-name">Western Platter Combo</span>
+          <span class="order-dish-price" id="order-dish-price">₹499</span>
+        </div>
+        <div class="order-qty-row">
+          <span class="order-qty-label">Quantity:</span>
+          <div class="order-qty-controls">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <span class="qty-value" id="qty-value">1</span>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <span class="order-total" id="order-total">Total: ₹499</span>
+        </div>
+      </div>
+
+      <!-- Customer details -->
+      <div class="order-form-grid">
+        <div class="order-form-group">
+          <label>👤 Full Name</label>
+          <input type="text" id="order-name" placeholder="Enter your full name" autocomplete="off">
+        </div>
+        <div class="order-form-group">
+          <label>📱 Phone Number</label>
+          <input type="tel" id="order-phone" placeholder="Enter your phone number" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="order-form-group">
+        <label>📍 Delivery Address</label>
+        <textarea id="order-address" placeholder="Enter your full delivery address…" rows="2"></textarea>
+      </div>
+
+      <div class="order-form-grid">
+        <div class="order-form-group">
+          <label>🕐 Delivery Time</label>
+          <select id="order-time">
+            <option value="">Select time…</option>
+            <option>As soon as possible (30 mins)</option>
+            <option>In 1 hour</option>
+            <option>In 2 hours</option>
+            <option>Schedule for later</option>
+          </select>
+        </div>
+        <div class="order-form-group">
+          <label>💳 Payment Method</label>
+          <select id="order-payment">
+            <option value="">Select payment…</option>
+            <option>Cash on Delivery</option>
+            <option>Online Payment (UPI)</option>
+            <option>Credit / Debit Card</option>
+            <option>Net Banking</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="order-form-group">
+        <label>📝 Special Instructions (Optional)</label>
+        <textarea id="order-notes" placeholder="Any special requests? e.g. less spicy, extra sauce…" rows="2"></textarea>
+      </div>
+
+      <!-- Promo code -->
+      <div class="order-promo-row">
+        <input type="text" id="order-promo" placeholder="Have a promo code? e.g. FOODSHOP20">
+        <button class="order-promo-btn" onclick="applyPromo()">Apply</button>
+      </div>
+      <div class="order-promo-msg" id="order-promo-msg"></div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="order-popup-footer">
+      <div class="order-final-total" id="order-final-total">Total Payable: ₹499</div>
+      <div class="order-footer-btns">
+        <button class="order-cancel-btn" onclick="closeOrder()">Cancel</button>
+        <button class="order-submit-btn" id="order-submit-btn" onclick="submitOrder()">
+          🚀 Confirm Order
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Order Success Popup -->
+  <div class="order-success" id="order-success" style="display:none;">
+    <div class="order-success-icon">🎉</div>
+    <div class="order-success-title">Order Placed Successfully!</div>
+    <div class="order-success-msg" id="order-success-msg"></div>
+    <button class="btn-primary" onclick="closeSuccess()">Continue Shopping</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
